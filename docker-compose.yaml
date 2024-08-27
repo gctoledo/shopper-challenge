@@ -2,7 +2,7 @@ version: '3'
 
 services:
   shopper:
-    image: postgresql
+    image: postgres:latest
     ports:
       - 5432:5432
     container_name: shopper-db
