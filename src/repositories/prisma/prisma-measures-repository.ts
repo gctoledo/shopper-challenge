@@ -9,4 +9,18 @@ export class PrismaMeasuresRepository {
 
     return measure
   }
+
+  async confirm(id: string, value: number) {
+    const measure = await prisma.measure.update({
+      where: {
+        id,
+      },
+      data: {
+        confirmed: true,
+        value,
+      },
+    })
+
+    return measure
+  }
 }
