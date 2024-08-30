@@ -64,7 +64,7 @@ export class UploadMeasureUseCase {
       date: measure_datetime,
       id: measureId,
       type: measure_type,
-      value: response.text(),
+      value: Number(response.text()),
     })
 
     return {

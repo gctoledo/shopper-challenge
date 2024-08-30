@@ -2,6 +2,7 @@ import { InvalidImageFormatError } from '@/http/errors/invalid-image-format'
 import { MeasureAlreadyConfirmedError } from '@/http/errors/measure-already-confirmed'
 import { MeasureAlreadyExistsError } from '@/http/errors/measure-already-exists'
 import { MeasureNotFoundError } from '@/http/errors/measure-not-found'
+import { MeasuresNotFoundError } from '@/http/errors/measures-not-found'
 import { FastifyError, FastifyReply, FastifyRequest } from 'fastify'
 import { ZodError } from 'zod'
 
@@ -11,9 +12,13 @@ export const errorHandler = async (
   res: FastifyReply,
 ) => {
   if (err instanceof ZodError) {
-    return res
-      .status(400)
-      .send({ error_code: 'INVALID_DATA', error_description: err.issues })
+    return res.status(400).send({
+      error_code: 'INVALID_DATA',
+      error_description:
+        err.issues.length > 1
+          ? err.issues.map((e) => e.message)
+          : err.issues[0].message,
+    })
   }
 
   if (err instanceof InvalidImageFormatError) {
@@ -43,4 +48,16 @@ export const errorHandler = async (
       error_description: err.message,
     })
   }
+
+  if (err instanceof MeasuresNotFoundError) {
+    return res.status(409).send({
+      error_code: 'MEASURES_NOT_FOUND',
+      error_description: err.message,
+    })
+  }
+
+  return res.status(500).send({
+    error_code: 'INTERNAL_ERROR',
+    error_description: err.message,
+  })
 }
