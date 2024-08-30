@@ -33,4 +33,29 @@ export class PrismaMeasuresRepository {
 
     return measure
   }
+
+  async findByMonth({
+    customer_code,
+    month,
+    year,
+    measure_type,
+  }: {
+    customer_code: string
+    month: number
+    year: number
+    measure_type: 'WATER' | 'GAS'
+  }) {
+    const measures = await prisma.measure.findMany({
+      where: {
+        customer_code,
+        type: measure_type,
+        date: {
+          gte: new Date(year, month - 1, 1),
+          lte: new Date(year, month, 0),
+        },
+      },
+    })
+
+    return measures
+  }
 }
