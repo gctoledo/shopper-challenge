@@ -1,0 +1,24 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Measure {
+  id            String   @id
+  value         Decimal  @db.Decimal(10, 2)
+  customer_code String
+  type          Type
+  date          DateTime
+  confirmed     Boolean  @default(false)
+
+  @@map("measures")
+}
+
+enum Type {
+  WATER
+  GAS
+}
