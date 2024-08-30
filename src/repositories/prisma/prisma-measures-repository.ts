@@ -24,6 +24,23 @@ export class PrismaMeasuresRepository {
     return measure
   }
 
+  async findByCustomer({
+    customer_code,
+    type,
+  }: {
+    customer_code: string
+    type?: 'WATER' | 'GAS'
+  }) {
+    const measures = await prisma.measure.findMany({
+      where: {
+        customer_code,
+        type,
+      },
+    })
+
+    return measures
+  }
+
   async findById(id: string) {
     const measure = await prisma.measure.findUnique({
       where: {
