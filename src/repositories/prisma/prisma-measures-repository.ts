@@ -23,4 +23,14 @@ export class PrismaMeasuresRepository {
 
     return measure
   }
+
+  async findById(id: string) {
+    const measure = await prisma.measure.findUnique({
+      where: {
+        id,
+      },
+    })
+
+    return measure
+  }
 }
