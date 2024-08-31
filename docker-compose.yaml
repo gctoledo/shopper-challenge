@@ -1,7 +1,16 @@
 version: '3'
 
 services:
-  shopper:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3333:3333'
+    depends_on:
+      - db
+
+  db:
     image: postgres:latest
     ports:
       - 5432:5432
