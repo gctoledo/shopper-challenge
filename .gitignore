@@ -6,3 +6,6 @@ node_modules
 
 ## Temp files ##
 temp
+
+## DB ##
+.postgres-data
